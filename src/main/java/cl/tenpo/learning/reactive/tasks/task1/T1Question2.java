@@ -34,18 +34,9 @@ public class T1Question2 {
     public Flux<String> question2C() {
         return countryService.findAllCountries()
                 .doOnNext(country -> log.info("[question2C] Found country: {}", country))
-                .map(this::mapCountry)
                 .takeWhile(country -> !"France".equals(country))
                 .onErrorResume(err -> Mono.empty())
                 .doOnComplete(() -> log.info("[question2C] Success on process"))
                 .doOnError(error -> log.error("[question2C] Error on process", error));
     }
-
-    private String mapCountry(final String country) {
-        if("Brasil".equals(country)) {
-            throw new RuntimeException("Error BR");
-        }
-        return country;
-    }
-
 }
